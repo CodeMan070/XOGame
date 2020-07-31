@@ -3,6 +3,7 @@ package com.mina.xogame
 class GameBoard {
     private var cells: Array<Cell> = Array(9, init = { Cell(Symbol.BLANK) })
     var gameState: GameState = GameState.PLAYING
+        private set
 
     fun draw(cellNumber: Int, symbol: Symbol): Boolean {
         var isDrawn = false
@@ -16,11 +17,19 @@ class GameBoard {
 
     }
 
+    fun resetGame() {
+        cells = Array<Cell>(9, init = { Cell(Symbol.BLANK) })
+        gameState = GameState.PLAYING
+        Player.setTurnToPlayerOne()
+    }
+
     private fun checkIfPlayerWon(symbol: Symbol) {
         if (symbol == Symbol.X && (checkRows(symbol) || checkCols(symbol) || checkDiagonals(symbol))) {
             gameState = GameState.PLAYER_ONE_WON
-        }
-        else if (symbol == Symbol.O && (checkRows(symbol) || checkCols(symbol) || checkDiagonals(symbol))) {
+        } else if (symbol == Symbol.O && (checkRows(symbol) || checkCols(symbol) || checkDiagonals(
+                symbol
+            ))
+        ) {
             gameState = GameState.PLAYER_TWO_WON
         }
     }
@@ -68,14 +77,5 @@ class GameBoard {
         }
     }
 
-    fun isGameEnded(): Boolean {
-        return gameState == GameState.DRAW || gameState == GameState.PLAYER_ONE_WON || gameState == GameState.PLAYER_TWO_WON
-    }
-
-    fun resetGame() {
-        cells = Array<Cell>(9, init = { Cell(Symbol.BLANK) })
-        gameState = GameState.PLAYING
-        Player.playerOneTurn = true
-    }
 
 }

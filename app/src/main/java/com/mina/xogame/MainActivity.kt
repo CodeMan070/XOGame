@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         gameBoard = GameBoard()
-        player1 = Player("Player 1", Symbol.X, gameBoard)
-        player2 = Player("Player 2", Symbol.O, gameBoard)
+        player1 = Player("Player X", Symbol.X, gameBoard)
+        player2 = Player("Player O", Symbol.O, gameBoard)
         cells = Array(9) {
             val x = when (it) {
                 0 -> button_1
@@ -37,54 +37,43 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         for (button in cells) {
             button?.setOnClickListener(this)
-            button?.scaleType =ImageView.ScaleType.FIT_XY
+            button?.scaleType = ImageView.ScaleType.FIT_XY
         }
-//        button_1.setOnClickListener(this)
-//        button_2.setOnClickListener(this)
-//        button_3.setOnClickListener(this)
-//        button_4.setOnClickListener(this)
-//        button_5.setOnClickListener(this)
-//        button_6.setOnClickListener(this)
-//        button_7.setOnClickListener(this)
-//        button_8.setOnClickListener(this)
-//        button_9.setOnClickListener(this)
 
     }
 
     override fun onClick(v: View?) {
-//        when (gameBoard.gameState) {
-//            GameState.PLAYING -> {
-//                play(v)
-//            }
-//            GameState.PLAYER_ONE_WON -> {
-//                Toast.makeText(this, "${player1.playerName} won !!", Toast.LENGTH_SHORT).show()
-//            }
-//            GameState.PLAYER_TWO_WON -> {
-//                Toast.makeText(this, "${player2.playerName} won !!", Toast.LENGTH_SHORT).show()
-//            }
-//            GameState.DRAW -> {
-//                Toast.makeText(this, "Game ended with no winner", Toast.LENGTH_SHORT).show()
-//            }
-//        }
         if (gameBoard.gameState == GameState.PLAYING) play(v)
-        if (gameBoard.gameState == GameState.PLAYER_ONE_WON) Toast.makeText(
-            this,
-            "${player1.playerName} won !!",
-            Toast.LENGTH_SHORT
-        ).show()
+        when (gameBoard.gameState) {
+            GameState.PLAYER_ONE_WON -> {
+                Toast.makeText(
+                    this,
+                    "${player1.playerName} won !!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            GameState.PLAYER_TWO_WON -> {
+                Toast.makeText(
+                    this,
+                    "${player2.playerName} won !!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            GameState.DRAW -> {
+                Toast.makeText(
+                    this,
+                    "Game ended with no winner",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
 
-        if (gameBoard.gameState == GameState.PLAYER_TWO_WON) Toast.makeText(
-            this,
-            "${player2.playerName} won !!",
-            Toast.LENGTH_SHORT
-        ).show()
-
-        if (gameBoard.gameState == GameState.DRAW) Toast.makeText(
-            this,
-            "Game ended with no winner",
-            Toast.LENGTH_SHORT
-        ).show()
-
+    }
+    fun resetGame(view: View) {
+        for (cell in cells) {
+            cell?.setImageResource(R.drawable.ic_baseline_info_24)
+        }
+        gameBoard.resetGame()
     }
 
     private fun play(v: View?) {
@@ -153,19 +142,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
-        Log.d(TAG, "onClick: here to baby")
-    }
-
-
-    companion object {
-        private const val TAG = "MainActivity"
-    }
-
-    fun resetGame(view: View) {
-        for (cell in cells) {
-            cell?.setImageResource(R.drawable.ic_baseline_info_24)
-        }
-        gameBoard.resetGame()
     }
 
 }
